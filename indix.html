@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Gestão Escolar</title>
+
+<!-- =======================
+     ESTILO (CSS)
+======================= -->
+<style>
+:root{
+    --azul:#0a4ea3;
+    --verde:#0a7d3b;
+    --cinza:#f2f7f5;
+}
+
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:var(--cinza);
+}
+
+.container{
+    max-width:480px;
+    margin:30px auto;
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 15px rgba(0,0,0,.1);
+}
+
+h2{
+    text-align:center;
+    color:var(--azul);
+}
+
+label{
+    margin-top:10px;
+    display:block;
+    font-weight:bold;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+button{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    background:var(--azul);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:var(--verde);
+}
+
+.links{
+    text-align:center;
+    margin-top:15px;
+}
+
+.links a{
+    color:var(--azul);
+    cursor:pointer;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.msg{
+    margin-top:10px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.sucesso{color:green;}
+.erro{color:red;}
+
+.oculto{display:none;}
+
+.show-pass{
+    font-size:14px;
+    margin-top:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- =======================
+        LOGIN
+======================= -->
+<div id="login">
+    <h2>Login</h2>
+
+    <label>Tipo de Utilizador</label>
+    <select id="loginTipo">
+        <option value="">Selecione</option>
+        <option value="aluno">Aluno</option>
+        <option value="professor">Professor</option>
+    </select>
+
+    <label>Email ou Nº de Processo</label>
+    <input type="text" id="loginUser">
+
+    <label>Palavra-passe</label>
+    <input type="password" id="loginSenha">
+    <div class="show-pass">
+        <input type="checkbox" onclick="toggleSenha('loginSenha')"> Mostrar palavra-passe
+    </div>
+
+    <button onclick="fazerLogin()">Entrar</button>
+
+    <div id="msgLogin" class="msg"></div>
+
+    <div class="links">
+        <p><a onclick="abrirAluno()">Cadastrar Aluno</a></p>
+        <p><a onclick="abrirProfessor()">Cadastrar Professor</a></p>
+    </div>
+</div>
+
+<!-- =======================
+     CADASTRO DE ALUNO
+======================= -->
+<div id="cadAluno" class="oculto">
+    <h2>Cadastro de Aluno</h2>
+
+    <label>Nome Completo</label>
+    <input id="aNome">
+
+    <label>Nº de Processo</label>
+    <input id="aProcesso">
+
+    <label>Classe</label>
+    <input id="aClasse">
+
+    <label>Curso</label>
+    <select id="aCurso">
+        <option>Ciências Físicas</option>
+        <option>Ciências Humanas</option>
+        <option>Ensino Primário</option>
+        <option>Ensino Secundário</option>
+    </select>
+
+    <label>Turno</label>
+    <select id="aTurno">
+        <option>Manhã</option>
+        <option>Tarde</option>
+        <option>Noite</option>
+    </select>
+
+    <label>Encarregado de Educação</label>
+    <input id="aEncarregado">
+
+    <label>Contacto do Encarregado (+244)</label>
+    <input id="aContacto">
+
+    <label>Email</label>
+    <input id="aEmail">
+
+    <label>Palavra-passe</label>
+    <input type="password" id="aSenha">
+
+    <label>Confirmar Palavra-passe</label>
+    <input type="password" id="aConfSenha">
+
+    <button onclick="cadastrarAluno()">Cadastrar</button>
+    <div id="msgAluno" class="msg"></div>
+
+    <div class="links">
+        <a onclick="voltar()">Voltar ao Login</a>
+    </div>
+</div>
+
+<!-- =======================
+   CADASTRO DE PROFESSOR
+======================= -->
+<div id="cadProfessor" class="oculto">
+    <h2>Cadastro de Professor</h2>
+
+    <label>Nome Completo</label>
+    <input id="pNome">
+
+    <label>Disciplina</label>
+    <input id="pDisciplina">
+
+    <label>Grau Académico</label>
+    <input id="pGrau">
+
+    <label>Nº de BI</label>
+    <input id="pBI">
+
+    <label>Contacto (+244)</label>
+    <input id="pContacto">
+
+    <label>Email</label>
+    <input id="pEmail">
+
+    <label>Palavra-passe</label>
+    <input type="password" id="pSenha">
+
+    <label>Confirmar Palavra-passe</label>
+    <input type="password" id="pConfSenha">
+
+    <button onclick="cadastrarProfessor()">Cadastrar</button>
+    <div id="msgProfessor" class="msg"></div>
+
+    <div class="links">
+        <a onclick="voltar()">Voltar ao Login</a>
+    </div>
+</div>
+
+</div>
+
+<!-- =======================
+        JAVASCRIPT
+======================= -->
+<script>
+// Alternar telas
+function abrirAluno(){ login.style.display="none"; cadAluno.style.display="block"; }
+function abrirProfessor(){ login.style.display="none"; cadProfessor.style.display="block"; }
+function voltar(){
+    cadAluno.style.display="none";
+    cadProfessor.style.display="none";
+    login.style.display="block";
+}
+
+// Mostrar / ocultar palavra-passe
+function toggleSenha(id){
+    const campo = document.getElementById(id);
+    campo.type = campo.type === "password" ? "text" : "password";
+}
+
+// Cadastro de aluno
+function cadastrarAluno(){
+    if(aSenha.value !== aConfSenha.value){
+        msgAluno.textContent="❌ As palavras-passe não coincidem";
+        msgAluno.className="msg erro";
+        return;
+    }
+
+    let alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+    alunos.push({
+        nome:aNome.value,
+        processo:aProcesso.value,
+        email:aEmail.value,
+        senha:aSenha.value
+    });
+
+    localStorage.setItem("alunos", JSON.stringify(alunos));
+    msgAluno.textContent="✅ Aluno cadastrado com sucesso";
+    msgAluno.className="msg sucesso";
+}
+
+// Cadastro de professor
+function cadastrarProfessor(){
+    if(pSenha.value !== pConfSenha.value){
+        msgProfessor.textContent="❌ As palavras-passe não coincidem";
+        msgProfessor.className="msg erro";
+        return;
+    }
+
+    let professores = JSON.parse(localStorage.getItem("professores")) || [];
+    professores.push({
+        nome:pNome.value,
+        email:pEmail.value,
+        senha:pSenha.value
+    });
+
+    localStorage.setItem("professores", JSON.stringify(professores));
+    msgProfessor.textContent="✅ Professor cadastrado com sucesso";
+    msgProfessor.className="msg sucesso";
+}
+
+// Login (simulado)
+function fazerLogin(){
+    if(loginTipo.value === "" || loginUser.value === "" || loginSenha.value === ""){
+        msgLogin.textContent="❌ Preencha todos os campos";
+        msgLogin.className="msg erro";
+        return;
+    }
+
+    msgLogin.textContent="✅ Login efetuado (simulação)";
+    msgLogin.className="msg sucesso";
+}
+</script>
+
+</body>
+</html>
